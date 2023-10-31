@@ -47,6 +47,11 @@ def readInRelations(filePath):
 def deleteTable(tableName):
     return f'DROP TABLE {tableName}'
 
-def insertIntoTable(tableName, values list[str]):
-    query = f'INSERT INTO {tableName}'
+def insertIntoTable(tableName: str, values: list[str]) -> str:
+    query = f'INSERT INTO {tableName} VALUES('
+    for v in values:
+        query = f'{query} \'{v}\''
+        if(values[-1] != v):
+            query = f'{query},'
+    query = f'{query})'
     return query
