@@ -10,15 +10,19 @@ def find_transitive_dependencies(relations: list[helper.Relation]) -> list[helpe
             transitive_dependencies.append(helper.Relation([r.x, r.y]))
     return transitive_dependencies
 
+def two_n_f(relations: list[helper.Relations], transitive_deps: list[helper.Relation]):
+    for x in relations:
+        for y in transitive_deps:
+            if(x.x == y.y):
+                relations.remove(x)
+    return relations, transitive_deps
+
 relations = helper.readInRelations("data/relations")
 primary_keys = helper.findPrimaryKeys(relations)
 
 transitive_deps = find_transitive_dependencies(relations)
+relations, transitive_deps = two_n_f(relations, transitive_deps)
 
-for x in relations:
-    for y in transitive_deps:
-        if(x.x == y.y):
-            relations.remove(x)
 print("Revised Functional Dependencies:", relations)
 print("transitive dependency", transitive_deps)
 print("Updated Primary Keys:", primary_keys)
