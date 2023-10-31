@@ -46,5 +46,6 @@ transitive_deps = find_transitive_dependencies(fd_dict)
 new_tables = reorganize_for_3NF(fd_dict, primary_keys, transitive_deps)
 
 print("Revised Functional Dependencies:", fd_dict)
+print("transitive dependency", transitive_deps)
 print("New Tables for 3NF:", new_tables)
 print("Updated Primary Keys:", primary_keys)
