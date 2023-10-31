@@ -12,6 +12,12 @@ class Relation:
     def __init__(self, xToY):
         self.x: str = xToY[0]
         self.y: str = xToY[1]
+    def __str__(self):
+        return f'{self.x} to {self.y}'
+    def __repr__(self):
+        return f'{self.x} to {self.y}'
+    def __eq__(self, value: object) -> bool:
+        return self.x == value.x and self.y == value.y
 
 def findPrimaryKeys(relations: list[Relation]):
     k = []
