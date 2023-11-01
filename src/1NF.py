@@ -64,11 +64,12 @@ def reorganize_for_1NF(tablename, db_filename):
         values = ', '.join([f"'{value}'" for value in new_table[i]])
         cursor.execute(f"INSERT INTO my_table VALUES ({values})")
 
+    conn.commit()
+    conn.close()
+
 #   OLD CODE HERE. THIS RETURNS THE TABLE AS LIST OF LISTS
 #   keeping just in case we want to change something for whatever reason
 
-#   conn.commit()
-#   conn.close()
 #   for i in range(len(split_vals)):
 #       for j in range(len(split_vals[i])):
 #           bad_rows[i][bad_loc[i]] = split_vals[i][j]
