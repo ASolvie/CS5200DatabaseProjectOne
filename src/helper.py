@@ -77,4 +77,4 @@ def create_database_from_folders(database_name: str, folder_name: str):
     cursor = connection.cursor()
     for que in queries:
         cursor.execute(que)
-    cursor.commit()
+    connection.commit()
