@@ -10,7 +10,7 @@ def find_transitive_dependencies(relations: list[helper.Relation]) -> list[helpe
             transitive_dependencies.append(helper.Relation([r.x, r.y]))
     return transitive_dependencies
 
-def two_n_f(relations: list[helper.Relations], transitive_deps: list[helper.Relation]):
+def three_n_f(relations: list[helper.Relation], transitive_deps: list[helper.Relation]):
     for x in relations:
         for y in transitive_deps:
             if(x.x == y.y):
