@@ -21,7 +21,7 @@ relations = helper.readInRelations("data/relations")
 primary_keys = helper.findPrimaryKeys(relations)
 
 transitive_deps = find_transitive_dependencies(relations)
-relations, transitive_deps = two_n_f(relations, transitive_deps)
+relations, transitive_deps = three_n_f(relations, transitive_deps)
 
 print("Revised Functional Dependencies:", relations)
 print("transitive dependency", transitive_deps)
@@ -31,5 +31,15 @@ print("Updated Primary Keys:", primary_keys)
 primary_keys_query = helper.constructCreateTableQuery(1, primary_keys, [])
 
 # create tables from primary key relations
+name = []
+for derp in primary_keys: 
+    name.append([derp] + [value.y for value in relations if value.x == derp])
+for i in range (len(primary_keys)):
+        print(helper.create_table_query(f'{i + 1}', name[i]))
 
 # create tables from non primary key relations
+name = []
+for derp in transitive_deps: 
+    name.append([derp.x] + [value.y for value in transitive_deps if value.x == derp.x])
+for i in range (len(transitive_deps)):
+        print(helper.create_table_query(f'{i + 1}', name[i]))
