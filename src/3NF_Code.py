@@ -41,7 +41,7 @@ print("Updated Primary Keys:", primary_keys)
 primary_keys_query = helper.constructCreateTableQuery(1, primary_keys, [])
 newTableNames = ['one','two','three','four']
 
-# create tables from primary key relations
+# create tables from primary key relationss
 name = []
 n = 0
 for derp in primary_keys: 
