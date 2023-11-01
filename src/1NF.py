@@ -41,7 +41,15 @@ def reorganize_for_1NF(tablename, db_filename):
         if not non_atom_flag:
             # append all rows from init table with no non_atomic values
             new_table.append(rows[i])
-            
+    
+    # Generate new rows using bad_rows, split_vals, and bad_loc
+    for i in range(len(bad_loc)):
+        for j in range(len(split_vals[i])):
+            # Clone the original row and modify the non-atomic value
+            new_row = bad_rows[i][:]  # Clone the original row
+            new_row[bad_loc[i]] = split_vals[i][j]  # Update the non-atomic value
+            new_table.append(new_row)
+    
     # Connect to the SQLite database and create a table
     conn = sqlite3.connect(db_filename)
     cursor = conn.cursor()
