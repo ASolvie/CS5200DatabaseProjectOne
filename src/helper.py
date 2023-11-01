@@ -75,4 +75,6 @@ def create_database_from_folders(database_name: str, folder_name: str):
             queries.append(insert_into_table(file_name, x.strip('\n'.split(','))))
     connection = sqlite3.connect(database_name)
     cursor = connection.cursor()
-    cur
+    for que in queries:
+        cursor.execute(que)
+    cursor.commit()
