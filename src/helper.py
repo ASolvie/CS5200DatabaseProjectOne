@@ -1,11 +1,13 @@
-def createTable(tableName, cursor, k):
+import os
+import sqlite3
+def create_table_query(tableName, k):
     query = f'CREATE TABLE IF NOT EXISTS {tableName}('
     for x in k:
         query = f'{query}{x} TEXT'
         if(k[-1] != x):
             query = f'{query},'
     query = f'{query})'
-    cursor.execute(query)
+    return query
 
 class Relation:
     # x -> y
@@ -53,7 +55,7 @@ def readInRelations(filePath):
 def deleteTable(tableName):
     return f'DROP TABLE {tableName}'
 
-def insertIntoTable(tableName: str, values: list[str]) -> str:
+def insert_into_table(tableName: str, values: list[str]) -> str:
     query = f'INSERT INTO {tableName} VALUES('
     for v in values:
         query = f'{query} \'{v}\''
@@ -61,3 +63,16 @@ def insertIntoTable(tableName: str, values: list[str]) -> str:
             query = f'{query},'
     query = f'{query})'
     return query
+
+def create_database_from_folders(database_name: str, folder_name: str):
+    file_names = os.listdir(f'data/{folder_name}')
+    queries = []
+    for file_name in file_names:
+        file = open(f'data/{file_name}','r')
+        names = file.readline().strip('\n').split(',')
+        queries.append(create_table_query(file_name, names))
+        for x in file:
+            queries.append(insert_into_table(file_name, x.strip('\n'.split(','))))
+    connection = sqlite3.connect(database_name)
+    cursor = connection.cursor()
+    cur
