@@ -1,13 +1,5 @@
 import os
 import sqlite3
-def create_table_query(tableName, k):
-    query = f'CREATE TABLE IF NOT EXISTS {tableName}('
-    for x in k:
-        query = f'{query}{x} TEXT'
-        if(k[-1] != x):
-            query = f'{query},'
-    query = f'{query})'
-    return query
 
 class Relation:
     # x -> y
@@ -20,8 +12,17 @@ class Relation:
         return f'{self.x} to {self.y}'
     def __eq__(self, value: object) -> bool:
         return self.x == value.x and self.y == value.y
+    
+def create_table_query(tableName, k) -> str:
+    query = f'CREATE TABLE IF NOT EXISTS {tableName}('
+    for x in k:
+        query = f'{query}{x} TEXT'
+        if(k[-1] != x):
+            query = f'{query},'
+    query = f'{query})'
+    return query
 
-def findPrimaryKeys(relations: list[Relation]):
+def find_primary_keys(relations: list[Relation]) -> list[str]:
     k = []
     for r in relations:
         k.append(r.x)
@@ -33,7 +34,7 @@ def findPrimaryKeys(relations: list[Relation]):
             k.remove(m)
     return list(set(k))
 
-def constructCreateTableQuery(tableName, keys, primaryKeys):
+def construct_create_table_query(tableName, keys, primaryKeys) -> str:
     query = f'CREATE TABLE IF NOT EXISTS {tableName}('
     for x in keys:
         query = f'{query}{x} TEXT'
@@ -41,18 +42,17 @@ def constructCreateTableQuery(tableName, keys, primaryKeys):
             query = f'{query} KEY'
         if(keys[-1] != x):
             query = f'{query},'
-
     query = f'{query})'
     return query
 
-def readInRelations(filePath):
+def read_in_relations(filePath) -> list[Relation]:
     file = open(f'{filePath}.txt', 'r')
     relations = []
     for x in file:
         relations.append(Relation(x.strip('\n').split('->')))
     return relations
 
-def deleteTable(tableName):
+def delete_table_query(tableName) -> str:
     return f'DROP TABLE {tableName}'
 
 def insert_into_table(tableName: str, values: list[str]) -> str:
@@ -81,7 +81,7 @@ def create_database_from_folders(database_name: str, folder_name: str):
         cursor.execute(que)
     connection.commit()
 
-def create_select_columns_from_old_table_query(new_table_name, old_table_name, columns):
+def create_select_columns_from_old_table_query(new_table_name, old_table_name, columns) -> str:
     query = f'CREATE TABLE {new_table_name} AS (SELECT'
     for column in columns:
         query = f'{query} column'
@@ -89,3 +89,11 @@ def create_select_columns_from_old_table_query(new_table_name, old_table_name, c
             query = f'{query},'
     query = f'{query} FROM {old_table_name})'
     return query
+
+def find_table_with_columns(database_name, columns) -> str:
+    connection = sqlite3.connect(f'{database_name}.db')
+    cursor = connection.cursor()
+    table_names = [value[0] for value in cursor.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()]
+    for table_name in table_names:
+        if(all(y in [data[0] for data in cursor.execute('SELECT * FROM {table_name}').description] for y in columns)):
+            return table_name
