@@ -68,13 +68,15 @@ def create_database_from_folders(database_name: str, folder_name: str):
     file_names = os.listdir(f'data/{folder_name}')
     queries = []
     for file_name in file_names:
-        file = open(f'data/{file_name}','r')
+        revisedFileName = file_name.strip('.csv')
+        file = open(f'data/{folder_name}/{file_name}','r')
         names = file.readline().strip('\n').split(',')
-        queries.append(create_table_query(file_name, names))
+        queries.append(create_table_query(revisedFileName, names))
         for x in file:
-            queries.append(insert_into_table(file_name, x.strip('\n'.split(','))))
-    connection = sqlite3.connect(database_name)
+            queries.append(insert_into_table(f'{revisedFileName}', x.strip('\n').split(',')))
+    connection = sqlite3.connect(f'{database_name}.db')
     cursor = connection.cursor()
     for que in queries:
+        print(que)
         cursor.execute(que)
     connection.commit()
