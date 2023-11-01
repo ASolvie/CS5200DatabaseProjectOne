@@ -1,4 +1,6 @@
+import queue
 import helper
+import sqlite3
 
 def find_transitive_dependencies(relations: list[helper.Relation]) -> list[helper.Relation]:
     transitive_dependencies = []
@@ -29,17 +31,27 @@ print("Updated Primary Keys:", primary_keys)
 
 # create primary key table
 primary_keys_query = helper.constructCreateTableQuery(1, primary_keys, [])
+tableNames = ['one','two','three','four']
 
 # create tables from primary key relations
 name = []
 for derp in primary_keys: 
     name.append([derp] + [value.y for value in relations if value.x == derp])
+queries = []
 for i in range (len(primary_keys)):
-        print(helper.create_table_query(f'{i + 1}', name[i]))
+        queries.append(helper.create_table_query(f'{tableNames[i]}', name[i]))
 
 # create tables from non primary key relations
 name = []
 for derp in transitive_deps: 
     name.append([derp.y] + [value.y for value in relations if value.x == derp.y])
 for i in range (len(transitive_deps)):
-        print(helper.create_table_query(f'{i + 1}', name[i]))
+        queries.append(helper.create_table_query(f'{tableNames[i + 2]}', name[i]))
+
+
+connection = sqlite3.connect("test")
+cursor = connection.cursor()
+for que in queries:
+    print(que)
+    cursor.execute(que)
+connection.commit()
