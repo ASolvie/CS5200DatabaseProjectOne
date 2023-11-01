@@ -52,6 +52,13 @@ def readInRelations(filePath):
         relations.append(Relation(x.strip('\n').split('->')))
     return relations
 
+def readInMVDs(filePath):
+    file = open(f'{filePath}.txt', 'r')
+    MVDs = []
+    for x in file:
+        relations.append(Relation(x.strip('\n').split('->>')))
+    return relations
+
 def deleteTable(tableName):
     return f'DROP TABLE {tableName}'
 
