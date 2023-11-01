@@ -82,10 +82,10 @@ def create_database_from_folders(database_name: str, folder_name: str):
     connection.commit()
 
 def create_select_columns_from_old_table(new_table_name, old_table_name, columns):
-    query = f'CREATE TABLE {new_table_name} AS (SELECT'
+    query = f'CREATE TABLE {new_table_name} AS SELECT '
     for column in columns:
-        query = f'{query} column'
+        query += f'{column} '
         if(columns[-1] != column):
-            query = f'{query},'
-    query = f'{query} FROM {old_table_name})'
+            query += f', '
+    query = f'{query} FROM {old_table_name};'
     return query
