@@ -1,6 +1,6 @@
-StudentID,Course,Professor
-101,Math101,Dr.Smith
-102,Math101,Dr.Smith
-103,CS101,Dr.Jones
-104,Bio101,Dr.Watson
-105,CS101,Dr.Jones
+StudentID,Course
+101,Math101
+102,Math101
+103,CS101
+104,Bio101
+105,CS101
