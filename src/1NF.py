@@ -18,7 +18,7 @@ def reorganize_for_1NF(tablename, db_filename):
 
     # open csv file in text mode, read into list of lists (rows array)
     with open(tablename, 'rt') as csvfile:
-        reader = csv.reader(csvfile, delimiter=' ')
+        reader = csv.reader(csvfile, delimiter=',')
         for row in reader:
             rows.append(row)
     
@@ -80,7 +80,7 @@ def reorganize_for_1NF(tablename, db_filename):
 # example usage:
 if __name__ == "__main__":
     # Specify the input CSV file and the desired SQLite database filename
-    input_csv_filename = 'input.csv'
+    input_csv_filename = 'exampleInputTable1.csv'
     output_db_filename = 'output.db'
     # Call the function to reorganize for 1NF and create the SQLite database
     reorganize_for_1NF(input_csv_filename, output_db_filename)
