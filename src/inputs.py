@@ -34,7 +34,7 @@ def create_mvds():
     while(mvd_string != 'exit'):
         mvd_string = input()
         try:
-            key, value = mvd_string.split('->>')
-            mvds[key] = value
+            keys, values = mvd_string.split('->>')
+            mvds[tuple(keys.split(','))] = tuple(values.split(','))
         except:
             print(f'Did not understand you MVD. mvd not added for input "{mvd_string}"')
