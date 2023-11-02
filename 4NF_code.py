@@ -30,7 +30,7 @@ def split_table(table_name, fd, mvd):
     # Remove original table
     cursor.execute(f"DROP TABLE IF EXISTS {table_name}")
     
-def convertTo4NF(db_name)
+def convertTo4NF(db_name):
     
     # Connect to your .db file
     conn = sqlite3.connect(db_name)
