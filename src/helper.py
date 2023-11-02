@@ -42,7 +42,7 @@ def readInMVDs(filePath):
     file = open(f'{filePath}.txt', 'r')
     MVDs = {}
     for x in file:
-        keys,values = x.strip('\n').split('-->')
+        keys,values = x.strip('\n').split('->>')
         MVDs[tuple(keys.split(','))] = tuple(values.split(','))
     return MVDs
 
