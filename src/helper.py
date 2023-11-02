@@ -52,7 +52,7 @@ def read_in_relations(filePath) -> list[Relation]:
         relations.append(Relation(x.strip('\n').split('->')))
     return relations
 
-def readInMVDs(filePath):
+def readInMVDs(filePath) -> list[Relation]:
     file = open(f'{filePath}.txt', 'r')
     MVDs = []
     for x in file:
