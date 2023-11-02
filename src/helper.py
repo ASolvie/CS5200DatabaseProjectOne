@@ -100,4 +100,3 @@ def list_primary_keys_of_table(database_name, table_name) -> list[str]:
     cursor = connection.cursor()
     return [name[0] for name in cursor.execute(f'SELECT name FROM PRAGMA_TABLE_INFO({table_name}) WHERE pk >= 1').fetchall()]
 
-print({['fruit']:['orange','apple', 'tomato'], ['tomato']:['red']})
