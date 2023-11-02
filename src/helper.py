@@ -32,7 +32,7 @@ def construct_create_table_query(tableName, keys, primaryKeys: list[str]) -> str
 
 def read_in_relations(filePath):
     file = open(f'{filePath}.txt', 'r')
-    relations = []
+    relations = {}
     for x in file:
         keys,values = x.strip('\n').split('->')
         relations[tuple(keys.split(','))] = tuple(values.split(','))
@@ -40,7 +40,7 @@ def read_in_relations(filePath):
 
 def readInMVDs(filePath):
     file = open(f'{filePath}.txt', 'r')
-    MVDs = []
+    MVDs = {}
     for x in file:
         keys,values = x.strip('\n').split('-->')
         MVDs[tuple(keys.split(','))] = tuple(values.split(','))
