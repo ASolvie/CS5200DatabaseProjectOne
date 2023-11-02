@@ -113,4 +113,4 @@ def find_table_with_columns(database_name, columns) -> str:
 def list_primary_keys_of_table(database_name, table_name) -> list[str]:
     connection = sqlite3.connect(f'{database_name}.db')
     cursor = connection.cursor()
-    return [name[0] for name in cursor.execute(f'SELECT name FROM PRAGMA_TABLE_INFO({table_name}) WHERE pk = 1').fetchall()]
+    return [name[0] for name in cursor.execute(f'SELECT name FROM PRAGMA_TABLE_INFO({table_name}) WHERE pk >= 1').fetchall()]
