@@ -44,6 +44,7 @@ newTableNames = [num2words(i) for i in range(1, 26)]#['one','two','three','four'
 
 # create tables from primary key relationss
 queries = []
+output_queries = []####
 n = 0
 name = []
 for derp in primary_keys: 
@@ -51,6 +52,7 @@ for derp in primary_keys:
 
 for i in range (len(primary_keys)):
         queries.append(helper.create_select_columns_from_old_table(f'{newTableNames[n]}', 'A', name[i]))
+        output_queries.append(helper.create_table_query(f'{newTableNames[n]}', name[i]))####
         n = n + 1
 n = i + 1 #to make sure we stay on the same count of new table names
 
@@ -60,6 +62,7 @@ for derp in transitive_deps:
     name.append([derp.y] + [value.y for value in relations if value.x == derp.y])
 for i in range (len(transitive_deps)):
         queries.append(helper.create_select_columns_from_old_table(f'{newTableNames[n]}', 'A', name[i]))
+        output_queries.append(helper.create_table_query(f'{newTableNames[n]}', name[i]))####
         n = n + 1
 
 newerTableNames = list(string.ascii_uppercase)
@@ -73,3 +76,5 @@ for que in queries:
     print(que)
     cursor.execute(que)
 connection.commit()
+for i in range (len(output_queries)):####
+    print(output_queries[i])####
