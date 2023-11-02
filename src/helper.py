@@ -104,11 +104,3 @@ def find_table_with_columns(database_name, columns) -> str:
     for table_name in table_names:
         if(all(y in [data[0] for data in cursor.execute('SELECT * FROM {table_name}').description] for y in columns)):
             return table_name
-        
-connection = sqlite3.connect('test.db')
-cursor = connection.cursor()
-foo = create_select_columns_from_old_table('foo', 'one', ['firstName', 'lastName'])
-print(foo)
-cursor.execute(foo)
-connection.commit()
-connection.close()
