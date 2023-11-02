@@ -3,7 +3,7 @@ import csv
 import helper
 
 # Helper function to split a table based on MVDs
-def split_table(table_name, mvd: list[helper.Relaion]):
+def split_table(table_name, mvd: list[helper.Relaion], cursor):
     cursor.execute(f"SELECT * FROM {table_name}")
     rows = cursor.fetchall()
 
@@ -44,7 +44,7 @@ def convertTo4NF(db_name):
         tables.append(helper.find_table_with_columns(db_name, [a.x, a.y]))
 
     # Check if the table has multivalued dependencies
-    for table_name, mvd in zip(tables, multivalued_dependencies):
+    for table_name, mvd in zip(tables, multivalued_dependencies, cursor):
         split_table(table_name, mvd)
     
     # Commit the changes and close the connection
