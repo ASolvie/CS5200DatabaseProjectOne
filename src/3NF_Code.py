@@ -30,7 +30,7 @@ def three_n_f(relations: list[helper.Relation], transitive_deps: list[helper.Rel
 
 helper.create_database_from_folders("ddo", "1NF")#takes the 1NF table since it is easiest to make into 3NF
 relations = helper.read_in_relations("data/relations")
-primary_keys = helper.find_primary_keys(relations)
+primary_keys = helper.find_primary_keys_in_relations(relations)
 
 transitive_deps = find_transitive_dependencies(relations)
 
@@ -68,7 +68,7 @@ for i in range (len(transitive_deps)):
 # = list(string.ascii_uppercase)
 queries.append(helper.delete_table_query('A'))#deletes the original table being given to make the db look better
 #for i in range (n):
-#    queries.append(f'ALTER TABLE {newTableNames[i]} RENAME TO {newerTableNames[i+1]};')#this was to make table names one, two, etc to B, C, D, etc
+#    queries.append(f'ALTER TABLE {newTableNames[i]} RENAME TO {newerTableNames[i+1]};')#this was to make table names one, two, etc to B, C, D, etc, probably just needs deleted
 
 connection = sqlite3.connect("ddo.db")
 cursor = connection.cursor()
