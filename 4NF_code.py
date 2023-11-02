@@ -41,7 +41,7 @@ def convertTo4NF(db_name):
     tables = cursor.fetchall()
     
     # Initialize a dictionary to store functional dependencies and multivalued dependencies
-    functional_dependencies = helper.readInRelations("data/relations")
+    functional_dependencies = helper.read_in_relations("data/relations")
     multivalued_dependencies = helper.readInMVDs("data/Multivalued")
 
     # Iterate over the tables and process each one
