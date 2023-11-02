@@ -12,8 +12,10 @@ def create_table_query(tableName, keys) -> str:
 
 def find_primary_keys_in_relations(relations: dict) -> list[str]:
     keys = []
-    [keys.extend(x) for x in list(relations.keys())]
-    values = list(relations.values())
+    values = []
+    [keys.extend([x] if type(x) is str else list(x)) for x in list(relations.keys())]
+    [values.extend([x] if type(x) is str else list(x)) for x in list(relations.values())]
+    return [item for item in keys if item not in values]
 
 def construct_create_table_query(tableName, keys, primaryKeys: list[str]) -> str:
     query = f'CREATE TABLE IF NOT EXISTS {tableName}('
@@ -99,4 +101,3 @@ def list_primary_keys_of_table(database_name, table_name) -> list[str]:
     connection = sqlite3.connect(f'{database_name}.db')
     cursor = connection.cursor()
     return [name[0] for name in cursor.execute(f'SELECT name FROM PRAGMA_TABLE_INFO({table_name}) WHERE pk >= 1').fetchall()]
-
