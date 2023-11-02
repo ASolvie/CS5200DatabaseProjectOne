@@ -1,27 +1,9 @@
 import helper
-done = False
-database_name = ""
-while(not done):
-    print("Input folder containing your database, example 1NF. This folder should be in the data folder.")
-    print("Tables should only contain letters from the alphabet.")
-    folder_name = input()
-    database_name = folder_name
-    try :
-        helper.create_database_from_folders(folder_name, database_name)
-        done = True
-    except:
-        print("Error occured")
-done = False
+import inputs
 
-print('Input Functional Dependencies, example "columnNameOne->columnNameTwo" type "exit" when you are finished')
-foo = ''
-relations: list[helper.Relation] = []
-while(foo != 'exit'):
-    relationString = input()
-    try:
-        relations.append(helper.Relation(foo.split('->')))
-    except:
-        print(f'Did not understand your relation. relation not added for input "{relationString}"')
+database_name = inputs.create_database()
+relations = inputs.create_relations()
+mvds = inputs.create_mvds()
 
 print('Pick the normal form you would like "1","2","3","B","4","5"')
 print('input "1"  "2"  "3"  "3.5" "4"  "5"')

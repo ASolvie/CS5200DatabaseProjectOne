@@ -22,7 +22,7 @@ def create_table_query(tableName, keys) -> str:
     query = f'{query})'
     return query
 
-def find_primary_keys(relations: list[Relation]) -> list[str]:
+def find_primary_keys_in_relations(relations: list[Relation]) -> list[str]:
     k = []
     for r in relations:
         k.append(r.x)
