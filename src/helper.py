@@ -97,10 +97,20 @@ def create_select_columns_from_old_table(new_table_name, old_table_name, columns
     query = f'{query} FROM {old_table_name};'
     return query
 
+def list_table_names(database_name) -> list[str]:
+    connection = sqlite3.connect(f'{database_name}.db')
+    cursor = connection.cursor()
+    return [value[0] for value in cursor.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()]
+
 def find_table_with_columns(database_name, columns) -> str:
     connection = sqlite3.connect(f'{database_name}.db')
     cursor = connection.cursor()
-    table_names = [value[0] for value in cursor.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()]
+    table_names = list_table_names(database_name)
     for table_name in table_names:
         if(all(y in [data[0] for data in cursor.execute('SELECT * FROM {table_name}').description] for y in columns)):
             return table_name
+        
+def list_primary_keys_of_table(database_name, table_name) -> list[str]:
+    connection = sqlite3.connect(f'{database_name}.db')
+    cursor = connection.cursor()
+    return [name[0] for name in cursor.execute(f'SELECT name FROM PRAGMA_TABLE_INFO({table_name}) WHERE pk = 1').fetchall()]
