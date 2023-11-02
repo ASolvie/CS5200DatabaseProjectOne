@@ -12,15 +12,17 @@ def split_table(table_name, fd, mvd):
     columns = [col[1] for col in cursor.fetchall()]
 
     # Create new tables to store the split data
-    for X, Y in mvd:
+    # TODO: fix this by fixing how MVDs are handled
+    for X, Y in mvd:  # fix how MVDs are handled here
         new_table_name = f"{table_name}_{X}_{Y}"
         cursor.execute(f"CREATE TABLE IF NOT EXISTS {new_table_name} ({X} TEXT, {Y} TEXT)")
 
     # Populate the new tables
+    # TODO: fix this by fixing how MVDs are handled
     for row in rows:
         for X, Y in mvd:
             x_value = row[columns.index(X)]
-            y_values = row[columns.index(Y)].split(',')  # Assuming MVDs are represented as comma-separated values
+            y_values = row[columns.index(Y)].split(',')  # fix how MVDs are handled here
 
             for y_value in y_values:
                 cursor.execute(f"INSERT INTO {table_name}_{X}_{Y} ({X}, {Y}) VALUES (?, ?)", (x_value, y_value))
