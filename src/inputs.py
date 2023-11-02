@@ -17,7 +17,7 @@ def create_database():
 def create_relations():
     print('Input Functional Dependencies, example "columnNameOne->columnNameTwo" type "exit" when you are finished')
     relation_string = ''
-    relations = {}
+    relations = []
     while(relation_string != 'exit'):
         relation_string = input()
         try:
@@ -30,11 +30,10 @@ def create_relations():
 def create_mvds():
     print('Input Multi-valued Dependencies, example columnNameOne->>columnNameTwo, type "exit" when you are finished')
     mvd_string = ''
-    mvds = {}
+    mvds = []
     while(mvd_string != 'exit'):
         mvd_string = input()
         try:
-            keys, values = mvd_string.split('->>')
-            mvds[tuple(keys.split(','))] = tuple(values.split(','))
+            mvds.append(helper.Relation(mvd_string.split('->>')))
         except:
             print(f'Did not understand you MVD. mvd not added for input "{mvd_string}"')
