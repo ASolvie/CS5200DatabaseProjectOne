@@ -52,6 +52,13 @@ def read_in_relations(filePath) -> list[Relation]:
         relations.append(Relation(x.strip('\n').split('->')))
     return relations
 
+def readInMVDs(filePath):
+    file = open(f'{filePath}.txt', 'r')
+    MVDs = []
+    for x in file:
+        MVDs.append(Relation(x.strip('\n').split('->>')))
+    return MVDs
+
 def delete_table_query(tableName) -> str:
     return f'DROP TABLE {tableName}'
 
@@ -81,13 +88,13 @@ def create_database_from_folders(database_name: str, folder_name: str):
         cursor.execute(que)
     connection.commit()
 
-def create_select_columns_from_old_table_query(new_table_name, old_table_name, columns) -> str:
-    query = f'CREATE TABLE {new_table_name} AS (SELECT'
+def create_select_columns_from_old_table(new_table_name, old_table_name, columns) -> str:
+    query = f'CREATE TABLE {new_table_name} AS SELECT '
     for column in columns:
-        query = f'{query} column'
+        query = f'{query} {column}'
         if(columns[-1] != column):
-            query = f'{query},'
-    query = f'{query} FROM {old_table_name})'
+            query = f'{query}, '
+    query = f'{query} FROM {old_table_name};'
     return query
 
 def find_table_with_columns(database_name, columns) -> str:
