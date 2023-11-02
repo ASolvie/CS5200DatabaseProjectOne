@@ -44,7 +44,7 @@ newTableNames = list(string.ascii_uppercase) #[num2words(i) for i in range(1, 26
 
 # create tables from primary key relationss
 queries = []#the queries needed to make the new db
-output_queries = []####i believe this is what is needed for our project but not sure
+#output_queries = []####i believe this is what is needed for our project but not sure
 n = 1#this keeps track of where we are in new table names so we do not duplicate table names, starts at one so the first letter is B and not A
 name = []
 for derp in primary_keys: #to make new tables for primary keys
@@ -52,7 +52,7 @@ for derp in primary_keys: #to make new tables for primary keys
 
 for i in range (len(primary_keys)):
         queries.append(helper.create_select_columns_from_old_table(f'{newTableNames[n]}', 'A', name[i]))#makes the sql queries for a db file
-        output_queries.append(helper.create_table_query(f'{newTableNames[n]}', name[i]))####makes the sql queries for the txt file to be outputted
+#        output_queries.append(helper.create_table_query(f'{newTableNames[n]}', name[i]))####makes the sql queries for the txt file to be outputted
         n = n + 1#increments the n variable
 
 
@@ -62,7 +62,7 @@ for derp in transitive_deps: #this is to make tables for the transitive deps
     name.append([derp.y] + [value.y for value in relations if value.x == derp.y])
 for i in range (len(transitive_deps)):
         queries.append(helper.create_select_columns_from_old_table(f'{newTableNames[n]}', 'A', name[i]))#makes the sql queries for a db file
-        output_queries.append(helper.create_table_query(f'{newTableNames[n]}', name[i]))####makes the sql queries for the txt file to be outputted
+#        output_queries.append(helper.create_table_query(f'{newTableNames[n]}', name[i]))####makes the sql queries for the txt file to be outputted
         n = n + 1
 
 # = list(string.ascii_uppercase)
@@ -77,5 +77,5 @@ for que in queries:
     cursor.execute(que)
 connection.commit()
 
-for i in range (len(output_queries)):####just prints the output queries to be reviewed
-    print(output_queries[i])####
+#for i in range (len(output_queries)):####just prints the output queries to be reviewed
+#    print(output_queries[i])####
