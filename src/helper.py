@@ -34,14 +34,16 @@ def find_primary_keys_in_relations(relations: list[Relation]) -> list[str]:
             k.remove(m)
     return list(set(k))
 
-def construct_create_table_query(tableName, keys, primaryKeys) -> str:
+def construct_create_table_query(tableName, keys, primaryKeys: list[str]) -> str:
     query = f'CREATE TABLE IF NOT EXISTS {tableName}('
     for x in keys:
         query = f'{query}{x} TEXT'
         if(x in primaryKeys):
-            query = f'{query} PRIMARY'
+            query = f'{query}'
         if(keys[-1] != x):
             query = f'{query},'
+    if(len(primaryKeys) != 0):
+        query = f'{query}, PRIMARY KEY ({",".join(primaryKeys)})'
     query = f'{query})'
     return query
 
