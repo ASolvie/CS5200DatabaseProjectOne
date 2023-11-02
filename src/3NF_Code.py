@@ -3,6 +3,7 @@ from tkinter.tix import COLUMN
 import helper
 import sqlite3
 import os
+import string
 from num2words import num2words
 
 try:
@@ -39,7 +40,7 @@ print("Updated Primary Keys:", primary_keys)
 
 # create primary key table
 primary_keys_query = helper.construct_create_table_query(1, primary_keys, [])
-newTableNames = [num2words(i) for i in range(1, 11)]#['one','two','three','four'] use this list if num2words doesn't work
+newTableNames = [num2words(i) for i in range(1, 26)]#['one','two','three','four'] use this list if num2words doesn't work
 
 # create tables from primary key relationss
 queries = []
@@ -61,7 +62,11 @@ for i in range (len(transitive_deps)):
         queries.append(helper.create_select_columns_from_old_table(f'{newTableNames[n]}', 'A', name[i]))
         n = n + 1
 
+newerTableNames = list(string.ascii_uppercase)
 queries.append(helper.delete_table_query('A'))
+for i in range (n):
+    queries.append(f'ALTER TABLE {newTableNames[i]} RENAME TO {newerTableNames[i+1]};')
+
 connection = sqlite3.connect("ddo.db")
 cursor = connection.cursor()
 for que in queries:
