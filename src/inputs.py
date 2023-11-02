@@ -17,11 +17,12 @@ def create_database():
 def create_relations():
     print('Input Functional Dependencies, example "columnNameOne->columnNameTwo" type "exit" when you are finished')
     relation_string = ''
-    relations: list[helper.Relation] = []
+    relations = {}
     while(relation_string != 'exit'):
         relation_string = input()
         try:
-            relations.append(helper.Relation(relation_string.split('->')))
+            keys,values = relation_string.split('->')
+            relations[tuple(keys.split(','))] = tuple(values.split(','))
         except:
             print(f'Did not understand your relation. relation not added for input "{relation_string}"')
     return relations

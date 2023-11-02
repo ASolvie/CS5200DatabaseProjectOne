@@ -1,17 +1,5 @@
 import os
 import sqlite3
-
-class Relation:
-    # x -> y
-    def __init__(self, xToY):
-        self.x: str = xToY[0]
-        self.y: str = xToY[1]
-    def __str__(self):
-        return f'{self.x} to {self.y}'
-    def __repr__(self):
-        return f'{self.x} to {self.y}'
-    def __eq__(self, value: object) -> bool:
-        return self.x == value.x and self.y == value.y
     
 def create_table_query(tableName, keys) -> str:
     query = f'CREATE TABLE IF NOT EXISTS {tableName}('
@@ -22,17 +10,10 @@ def create_table_query(tableName, keys) -> str:
     query = f'{query})'
     return query
 
-def find_primary_keys_in_relations(relations: list[Relation]) -> list[str]:
-    k = []
-    for r in relations:
-        k.append(r.x)
-    means = []
-    for r in relations:
-        means.append(r.y)
-    for m in means:
-        if(m in k):
-            k.remove(m)
-    return list(set(k))
+def find_primary_keys_in_relations(relations: dict) -> list[str]:
+    keys = []
+    [keys.extend(x) for x in list(relations.keys())]
+    values = list(relations.values())
 
 def construct_create_table_query(tableName, keys, primaryKeys: list[str]) -> str:
     query = f'CREATE TABLE IF NOT EXISTS {tableName}('
@@ -47,18 +28,20 @@ def construct_create_table_query(tableName, keys, primaryKeys: list[str]) -> str
     query = f'{query})'
     return query
 
-def read_in_relations(filePath) -> list[Relation]:
+def read_in_relations(filePath):
     file = open(f'{filePath}.txt', 'r')
     relations = []
     for x in file:
-        relations.append(Relation(x.strip('\n').split('->')))
+        keys,values = x.strip('\n').split('->')
+        relations[tuple(keys.split(','))] = tuple(values.split(','))
     return relations
 
-def readInMVDs(filePath) -> list[Relation]:
+def readInMVDs(filePath):
     file = open(f'{filePath}.txt', 'r')
     MVDs = []
     for x in file:
-        MVDs.append(Relation(x.strip('\n').split('->>')))
+        keys,values = x.strip('\n').split('-->')
+        MVDs[tuple(keys.split(','))] = tuple(values.split(','))
     return MVDs
 
 def delete_table_query(tableName) -> str:
@@ -116,3 +99,5 @@ def list_primary_keys_of_table(database_name, table_name) -> list[str]:
     connection = sqlite3.connect(f'{database_name}.db')
     cursor = connection.cursor()
     return [name[0] for name in cursor.execute(f'SELECT name FROM PRAGMA_TABLE_INFO({table_name}) WHERE pk >= 1').fetchall()]
+
+print({['fruit']:['orange','apple', 'tomato'], ['tomato']:['red']})
