@@ -39,7 +39,7 @@ def construct_create_table_query(tableName, keys, primaryKeys) -> str:
     for x in keys:
         query = f'{query}{x} TEXT'
         if(x in primaryKeys):
-            query = f'{query} KEY'
+            query = f'{query} PRIMARY'
         if(keys[-1] != x):
             query = f'{query},'
     query = f'{query})'
