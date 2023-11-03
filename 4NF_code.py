@@ -1,5 +1,4 @@
 import sqlite3
-import csv
 import helper
 
 # Helper function to split a table based on MVDs
@@ -35,7 +34,6 @@ def convertTo4NF(db_name):
     cursor = conn.cursor()
 
     # Initialize a dictionary to store functional dependencies and multivalued dependencies
-    functional_dependencies = helper.read_in_relations("data/relations")
     multivalued_dependencies = helper.readInMVDs("data/Multivalued")
     
     # Create a list of all table names needed
@@ -44,8 +42,8 @@ def convertTo4NF(db_name):
         tables.append(helper.find_table_with_columns(db_name, [a.x, a.y]))
 
     # Check if the table has multivalued dependencies
-    for table_name, mvd in zip(tables, multivalued_dependencies, cursor):
-        split_table(table_name, mvd)
+    for table_name, mvd in zip(tables, multivalued_dependencies):
+        split_table(table_name, mvd, cursor)
     
     # Commit the changes and close the connection
     conn.commit()
