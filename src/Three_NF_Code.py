@@ -61,3 +61,4 @@ def convert_to_3NF(db_name):
         (que)
         cursor.execute(que)
     connection.commit()
+#convert_to_3NF("ddo")

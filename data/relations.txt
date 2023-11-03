@@ -1,6 +1,4 @@
-studentId->firstName
-studentId->lastName
-course->courseStart
-course->courseEnd
-course->professor
-professor->professorEmail
+StudentID -> FirstName, LastName
+Course, Professor -> classroom
+Course -> CourseStart, CourseEnd
+Professor -> ProfessorEmail
