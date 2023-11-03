@@ -33,6 +33,7 @@ print('Pick the normal form you would like "1","2","3","B","4","5"')
 print('input "1"  "2"  "3"  "3.5" "4"  "5"')
 print('means 1NF  2NF  3NF  BCNF  4NF  5NF')
 choice = 0
+done=False
 while(not done):
     try:
         string_input = input("Choice: ")
