@@ -56,13 +56,24 @@ def removeColumns(connection, table1, table2):
     
     # Commit the changes
     connection.commit()
+def transform_relationships(input_file, output_file):
+    with open(input_file, 'r') as infile, open(output_file, 'w') as outfile:
+        for line in infile:
+            line = line.strip()
+            if not line:
+                continue
+            x, y = line.split(' -> ')
+            y_parts = [part.strip() for part in y.split(',')]
+            for y_part in y_parts:
+                outfile.write(f"{x}->{y_part}\n")
 
 def normalize_2nf():
     connection = sqlite3.connect('ddo.db')
     cursor = connection.cursor()
     cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
-    table_names = cursor.fetchall()
-    file = open('data/relations.txt', 'r')
+    table_name = cursor.fetchall()
+    transform_relationships("data/relations.txt", "data/relations2.txt")
+    file = open('data/relations2.txt', 'r')
     relations = []
     for x in file:
         relations.append(Relation(x.strip('\n').split('->')))
@@ -107,7 +118,6 @@ def normalize_2nf():
                     if relation.y not in temp:
                         temp.append(relation.y)
     # Create tables for attributes in relation_x_dict
-    print("\n", relation_x_dict, "\n")
     for table_name2 in relation_x_dict:
         attributes = relation_x_dict[table_name2]
 
@@ -127,9 +137,6 @@ def normalize_2nf():
         # Remove the copied columns from the original table
         removeColumns(connection, table_name, attributes)
         remove_duplicate_rows(connection, table_name2)
-    #print(attributes)
-    print(relation_x_dict)
-    print(grouped_x_attributes)
+
     # Commit the changes
     connection.commit()
-    print(relation_x_dict2)
