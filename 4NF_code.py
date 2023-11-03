@@ -3,7 +3,7 @@ import csv
 import helper
 
 # Helper function to split a table based on MVDs
-def split_table(table_name, mvd: list[helper.Relaion], cursor):
+def split_table(table_name, mvd: list[helper.Relation], cursor):
     cursor.execute(f"SELECT * FROM {table_name}")
     rows = cursor.fetchall()
 
