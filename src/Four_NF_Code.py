@@ -22,9 +22,6 @@ def split_table(table_name, mvd: helper.Relation, cursor):
         y_values = row[columns.index(mvd.y)]
         cursor.execute(f"INSERT INTO {table_name}_{mvd.x}_{mvd.y} ({mvd.x}, {mvd.y}) VALUES (?, ?)", (x_value, y_values))
 
-    # Remove original table
-    cursor.execute(f"DROP TABLE IF EXISTS {table_name}")
-
 def convertTo4NF(db_name):
     # Connect to your .db file
     conn = sqlite3.connect(f'{db_name}.db')
@@ -37,11 +34,13 @@ def convertTo4NF(db_name):
     tables = []
     for a in multivalued_dependencies:
         tables.append(helper.find_table_with_columns(db_name, [a.x, a.y]))
-        
     # Split all tables
     for table_name, mvd in zip(tables, multivalued_dependencies):
         split_table(table_name, mvd, cursor)
-    
+    for table_name in tables:
+        cursor.execute(f"DROP TABLE IF EXISTS {table_name}")
     # Commit the changes and close the connection
     conn.commit()
     conn.close()
+
+convertTo4NF("ddo")
