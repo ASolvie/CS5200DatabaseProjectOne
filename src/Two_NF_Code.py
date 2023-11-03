@@ -75,13 +75,13 @@ def transform_relationships(input_file, output_file):
                     outfile.write(f"{x}->{y_part}\n")
 
 def normalize_2nf():
-    connection = sqlite3.connect('ddo.db')
+    connection = sqlite3.connect('ddoo.db')
     cursor = connection.cursor()
     cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
     #table_name = cursor.fetchall()
     yeet = cursor.fetchone()
     table_name = yeet[0]
-    print(table_name)
+    #print(table_name)
     transform_relationships("data/relations.txt", "data/relations2.txt")
     file = open('data/relations2.txt', 'r')
     relations = []

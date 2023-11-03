@@ -87,7 +87,7 @@ def create_database_from_folders(database_name: str, folder_name: str):
     connection = sqlite3.connect(f'{database_name}.db')
     cursor = connection.cursor()
     for que in queries:
-        print(que)
+        #print(que)
         cursor.execute(que)
     connection.commit()
 

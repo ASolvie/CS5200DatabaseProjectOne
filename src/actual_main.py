@@ -7,7 +7,12 @@ import Three_NF_Code
 import Two_NF_Code
 import One_NF_Code
 import sqlite3
+import os
 
+try:
+    os.remove("ddo.db") # removes old ddo.db file, ddo is the new db file
+except: 
+    pass
 #database_name = inputs.create_database()
 #relations = inputs.create_relations()
 #mvds = inputs.create_mvds()
@@ -64,7 +69,7 @@ while(not done):
 
 primary_keys = helper.find_primary_keys_in_relations(relations)
 if(choice >= 1.0):
-    One_NF_Code.reorganize_for_1NF(input_table, 'ddo')
+    One_NF_Code.reorganize_for_1NF(input_table, 'ddoo')
 if(choice >= 2.0):
     Two_NF_Code.normalize_2nf()
 if(choice >= 3.0):
@@ -74,12 +79,12 @@ if(choice >= 3.5):
 if(choice >= 4.0):
     Four_NF_Code.convertTo4NF('ddo')
 if(choice >= 5.0):
-    FiveNF_Code.fifth_normal_form('ddo.db', primary_keys)
+    FiveNF_Code.fifth_normal_form('ddo', primary_keys)
 
 # BELOW CODE IS MEANT TO OUTPUT CONTENT OF ddo.db TO OUTPUT FILE
 
 # Connect to the SQLite database
-conn = sqlite3.connect("ddo.db")
+conn = sqlite3.connect('ddo.db')
 cursor = conn.cursor()
 
 # Get a list of tables in the database

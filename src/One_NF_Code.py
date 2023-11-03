@@ -3,7 +3,7 @@ import csv
 import sqlite3
 import os
     
-def reorganize_for_1NF(tablename, db_filename):
+def reorganize_for_1NF(tablename, db_name):
     # rows array represents initial table
     rows = []
     # bad_rows stores indexes of rows in rows array with non_atomic values
@@ -16,9 +16,10 @@ def reorganize_for_1NF(tablename, db_filename):
     bad_rows = []
     
     try:
-        os.remove('ddo.db') # removes old ddo.db file, ddo is the new db file
+        os.remove("ddoo.db") # removes old ddo.db file, ddo is the new db file
+        os.remove("ddo.db")
     except: 
-        print('file not found')
+        pass
 
     # open csv file in text mode, read into list of lists (rows array)
     with open(tablename, 'rt') as csvfile:
@@ -56,6 +57,22 @@ def reorganize_for_1NF(tablename, db_filename):
     
     # Connect to the SQLite database and create a table
     conn = sqlite3.connect(f'{db_name}.db')
+    cursor = conn.cursor()
+
+    # Create a table with columns from the header row
+    header_row = new_table[0]
+    columns = ', '.join(header_row)
+    cursor.execute(f"CREATE TABLE IF NOT EXISTS my_table ({columns})")
+
+    # Insert rows into the table
+    for i in range(1, len(new_table)):
+        values = ', '.join([f"'{value}'" for value in new_table[i]])
+        cursor.execute(f"INSERT INTO my_table VALUES ({values})")
+
+    conn.commit()
+    conn.close()
+
+    conn = sqlite3.connect('ddo.db')
     cursor = conn.cursor()
 
     # Create a table with columns from the header row

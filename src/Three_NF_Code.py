@@ -16,12 +16,12 @@ def find_transitive_dependencies(relations: list[helper.Relation]) -> list[helpe
     return transitive_dependencies
     
 def convert_to_3NF(db_name):
-    try:
-        os.remove(f'{db_name}.db') # removes old ddo.db file, ddo is the new db file
-    except: 
-        print('file not found')
+    #try:
+    #    os.remove(f'{db_name}.db') # removes old ddo.db file, ddo is the new db file
+    #except: 
+    #    pass
     
-    helper.create_database_from_folders(db_name, "1NF")#takes the 1NF table since it is easiest to make into 3NF
+    #helper.create_database_from_folders(db_name, "1NF")#takes the 1NF table since it is easiest to make into 3NF
     relations = helper.read_in_relations("data/relations")
     primary_keys = helper.find_primary_keys_in_relations(relations)
     
@@ -61,4 +61,4 @@ def convert_to_3NF(db_name):
         (que)
         cursor.execute(que)
     connection.commit()
-#convert_to_3NF("ddo")
+convert_to_3NF("ddo")
