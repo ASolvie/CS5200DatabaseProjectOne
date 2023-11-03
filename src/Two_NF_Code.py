@@ -148,5 +148,6 @@ def normalize_2nf():
         removeColumns(connection, table_name, attributes)
         remove_duplicate_rows(connection, table_name2)
 
+    cursor.execute(f"DROP TABLE {table_name};")
     # Commit the changes
     connection.commit()

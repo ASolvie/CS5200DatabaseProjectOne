@@ -84,7 +84,10 @@ if(choice >= 5.0):
 # BELOW CODE IS MEANT TO OUTPUT CONTENT OF ddo.db TO OUTPUT FILE
 
 # Connect to the SQLite database
-conn = sqlite3.connect('ddo.db')
+if choice >= 3.0:
+    conn = sqlite3.connect('ddo.db')
+else:
+    conn = sqlite3.connect('ddoo.db')
 cursor = conn.cursor()
 
 # Get a list of tables in the database
