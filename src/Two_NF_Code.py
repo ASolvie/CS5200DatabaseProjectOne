@@ -40,7 +40,13 @@ def removeColumns(connection, table1, table2):
     # Commit the changes
     connection.commit()
 
-def normalize_2nf(connection, table_name, relations):
+def normalize_2nf(connection, table_name):
+    connection = sqlite3.connect('ddo.db') # create a new students database file
+    file = open('data/relations.txt', 'r')
+    relations = []
+    for x in file:
+        relations.append(Relation(x.strip('\n').split('->')))
+        
     first = "" 
     temp=[]
     relation_y_dict = {}
