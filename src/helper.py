@@ -14,7 +14,7 @@ class Relation:
     def __eq__(self, value: object) -> bool:
         return self.x == value.x and self.y == value.y
 
-def create_table_query(tableName, keys) -> str:
+def create_table_query(tableName, keys : list[str]) -> str:
     query = f'CREATE TABLE IF NOT EXISTS {tableName}('
     for ky in keys:
         query = f'{query}{ky} TEXT'
