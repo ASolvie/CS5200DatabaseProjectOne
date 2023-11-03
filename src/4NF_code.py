@@ -24,23 +24,21 @@ def split_table(table_name, mvd: helper.Relation, cursor):
 
     # Remove original table
     cursor.execute(f"DROP TABLE IF EXISTS {table_name}")
-    
+
 def convertTo4NF(db_name):
-    
     # Connect to your .db file
     conn = sqlite3.connect(f'{db_name}.db')
     cursor = conn.cursor()
 
-    # Initialize a dictionary to store functional dependencies and multivalued dependencies
+    # Initialize a list to store the multivalued dependencies
     multivalued_dependencies = helper.readInMVDs("data/Multivalued")
     
     # Create a list of all table names needed
     tables = []
     for a in multivalued_dependencies:
-        print(helper.find_table_with_columns(db_name, [a.x, a.y]))
         tables.append(helper.find_table_with_columns(db_name, [a.x, a.y]))
-    print(tables)
-    # Check if the table has multivalued dependencies
+        
+    # Split all tables
     for table_name, mvd in zip(tables, multivalued_dependencies):
         split_table(table_name, mvd, cursor)
     
