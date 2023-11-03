@@ -13,6 +13,20 @@ mvds = inputs.create_mvds()
 print("Input dataset (.csv format):")
 input_table = input()
 
+with open("relations.txt", "w") as file:
+    while True:
+        inp = input("Input Functional Dependencies (type “exit” and hit enter to complete your dependency list):")
+        if inp == "exit":
+            break
+        file.write(inp + "\n")
+
+with open("Multivalued.txt", "w") as file:
+    while True:
+        inp = input("Input Multi-valued Dependencies (type “exit” and hit enter to complete your dependency list. Do not use whitespace/spaces):")
+        if inp == "exit":
+            break
+        file.write(inp + "\n")
+
 print('Pick the normal form you would like "1","2","3","B","4","5"')
 print('input "1"  "2"  "3"  "3.5" "4"  "5"')
 print('means 1NF  2NF  3NF  BCNF  4NF  5NF')
