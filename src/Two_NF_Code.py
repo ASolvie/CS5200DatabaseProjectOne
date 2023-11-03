@@ -57,15 +57,22 @@ def removeColumns(connection, table1, table2):
     # Commit the changes
     connection.commit()
 
-def normalize_2nf(connection, table_name, relations):
+def normalize_2nf():
+    connection = sqlite3.connect('ddo.db')
+    cursor = connection.cursor()
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    table_names = cursor.fetchall()
+    file = open('data/relations.txt', 'r')
+    relations = []
+    for x in file:
+        relations.append(Relation(x.strip('\n').split('->')))
+
     first = "" 
     temp = []
     relation_x_dict = {}
     relation_x_dict2 = {}
     primary_keys = findPrimaryKeys(relations)
     No_PFD = primary_keys
-    cursor = connection.cursor()
-
     # Create a dictionary to group 'x' attributes that lead to the same 'y' attribute
     grouped_x_attributes = {}
 
