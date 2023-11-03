@@ -55,7 +55,7 @@ def reorganize_for_1NF(tablename, db_filename):
             new_table.append(new_row)
     
     # Connect to the SQLite database and create a table
-    conn = sqlite3.connect(db_filename)
+    conn = sqlite3.connect(f'{db_name}.db')
     cursor = conn.cursor()
 
     # Create a table with columns from the header row
