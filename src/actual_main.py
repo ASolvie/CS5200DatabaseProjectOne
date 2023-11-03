@@ -1,5 +1,6 @@
 import helper
 import inputs
+import FiveNF_Code
 
 database_name = inputs.create_database()
 relations = inputs.create_relations()
@@ -37,6 +38,7 @@ while(not done):
     except:
         print(f'Invalid input {choice_string}')
 
+primary_keys = helper.find_primary_keys_in_relations(relations)
 if(choice >= 1.0):
     print('We expect tables to be in 1NF, because we limit what tables we parse.')
     helper.create_database_from_folders('foo','1NF')
@@ -50,4 +52,5 @@ if(choice >= 4.0):
     print('running 4NF')
 if(choice >= 5.0):
     print('running 5NF')
+    FiveNF_Code.fifth_normal_form(database_name, primary_keys)
 
