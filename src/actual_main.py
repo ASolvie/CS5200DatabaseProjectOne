@@ -2,6 +2,7 @@ import helper
 import inputs
 import FiveNF_Code
 import Four_NF_Code
+import BCNF_Code
 import Three_NF_Code
 import Two_NF_Code
 import One_NF_Code
@@ -67,7 +68,7 @@ if(choice >= 2.0):
 if(choice >= 3.0):
     Three_NF_Code.convert_to_3NF('ddo')
 if(choice >= 3.5):
-    print('running BCNF')
+    BCNF_Code.convert_to_BCNF('ddo')
 if(choice >= 4.0):
     Four_NF_Code.convertTo4NF('ddo')
 if(choice >= 5.0):
