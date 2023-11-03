@@ -1,10 +1,17 @@
 import helper
 import inputs
 import FiveNF_Code
+import Four_NF_Code
+import Three_NF_Code
+import Two_NF_Code
+import One_NF_Code
 
-database_name = inputs.create_database()
+#database_name = inputs.create_database()
 relations = inputs.create_relations()
 mvds = inputs.create_mvds()
+
+print("Input dataset (.csv format):")
+input_table = input()
 
 print('Pick the normal form you would like "1","2","3","B","4","5"')
 print('input "1"  "2"  "3"  "3.5" "4"  "5"')
@@ -40,8 +47,7 @@ while(not done):
 
 primary_keys = helper.find_primary_keys_in_relations(relations)
 if(choice >= 1.0):
-    print('We expect tables to be in 1NF, because we limit what tables we parse.')
-    helper.create_database_from_folders('foo','1NF')
+    One_NF_Code.reorganize_for_1NF(input_table, 'ddo.db')
 if(choice >= 2.0):
     print('running 2NF')
 if(choice >= 3.0):
@@ -49,8 +55,8 @@ if(choice >= 3.0):
 if(choice >= 3.5):
     print('running BCNF')
 if(choice >= 4.0):
-    print('running 4NF')
+    Four_NF_Code.convertTo4NF('ddo.db')
 if(choice >= 5.0):
     print('running 5NF')
-    FiveNF_Code.fifth_normal_form(database_name, primary_keys)
+    FiveNF_Code.fifth_normal_form('ddo.db', primary_keys)
 
