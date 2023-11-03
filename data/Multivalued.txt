@@ -1,4 +1,4 @@
-Course ->> Professor
-Course ->> classroom
-StudentID ->> Course
-StudentID ->> Professor
+Course->>Professor
+Course->>classroom
+StudentID->>Course
+StudentID->>Professor
