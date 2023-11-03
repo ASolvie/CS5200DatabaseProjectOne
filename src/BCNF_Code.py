@@ -34,8 +34,8 @@ def split_table(table_name, fds: helper.Relation, cursor):
     cursor.execute(f"CREATE TABLE IF NOT EXISTS {new_table_name} ({fds.x} TEXT, {fds.y} TEXT)")
     
     for row in rows:
-        x_value = row[columns.index(x)]
-        y_value = row[columns.index(y)]
+        x_value = row[columns.index(fds.x)]
+        y_value = row[columns.index(fds.y)]
         cursor.execute(f"INSERT INTO {new_table_name} ({fds.x}, {fds.y}) VALUES (?, ?)", (x_value, y_value))
 
     # Remove the original table
@@ -61,5 +61,3 @@ def convertToBCNF(db_name):
     # Commit the changes and close the connection
     conn.commit()
     conn.close()
-
-    convertToBCNF('ddo.db')
