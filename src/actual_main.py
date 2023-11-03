@@ -55,7 +55,7 @@ if(choice >= 3.0):
 if(choice >= 3.5):
     print('running BCNF')
 if(choice >= 4.0):
-    Four_NF_Code.convertTo4NF('ddo.db')
+    Four_NF_Code.convertTo4NF('ddo')
 if(choice >= 5.0):
     FiveNF_Code.fifth_normal_form('ddo.db', primary_keys)
 
