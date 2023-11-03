@@ -1,9 +1,7 @@
 import helper
 import csv
 import sqlite3
-
-#note: helper not actually used here, didn't see the need to.
-
+    
 def reorganize_for_1NF(tablename, db_filename):
     # rows array represents initial table
     rows = []
@@ -15,6 +13,11 @@ def reorganize_for_1NF(tablename, db_filename):
     split_vals = []
 
     bad_rows = []
+    
+    try:
+        os.remove('ddo.db') # removes old ddo.db file, ddo is the new db file
+    except: 
+        print('file not found')
 
     # open csv file in text mode, read into list of lists (rows array)
     with open(tablename, 'rt') as csvfile:
@@ -77,8 +80,9 @@ def reorganize_for_1NF(tablename, db_filename):
 #          
 #   return new_table
 
+# TESTING BELOW
 # Specify the input CSV file and the desired SQLite database filename
-input_csv_filename = '../data/exampleInputTable1.csv'
+input_csv_filename = 'data/exampleInputTable1.csv'
 output_db_filename = 'ddo.db'
 # Call the function to reorganize for 1NF and create the SQLite database
 reorganize_for_1NF(input_csv_filename, output_db_filename)
