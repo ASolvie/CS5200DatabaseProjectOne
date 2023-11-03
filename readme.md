@@ -1,4 +1,4 @@
-Group members: Wesley Tyree, Austen Solvie, Alexander Rushing, smiter(replace this)
+Group members: Wesley Tyree, Austen Solvie, Alexander Rushing, and Andrew Sabala
 Usage instructions:
   the main function to run is 'actual_main.py'
   specific input instructions are given when file runs
