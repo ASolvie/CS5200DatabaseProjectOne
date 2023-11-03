@@ -51,7 +51,7 @@ if(choice >= 1.0):
 if(choice >= 2.0):
     print('running 2NF')
 if(choice >= 3.0):
-    print('running 3NF')
+    Three_NF_Code.convert_to_3NF(db_name)
 if(choice >= 3.5):
     print('running BCNF')
 if(choice >= 4.0):
