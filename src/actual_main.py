@@ -48,17 +48,17 @@ while(not done):
     except:
         print(f'Invalid input {string_input}')
 done = False
-print('Find the highest normal form of the input database?')
-while(not done):
-    try:
-        choice_string = input('"1": Yes, "2": No')
-        choice = int(choice_string)
-        if(choice is 1 or choice is 2):
-            done = True
-        else:
-            raise Exception('Invalid input')
-    except:
-        print(f'Invalid input {choice_string}')
+#print('Find the highest normal form of the input database?')
+#while(not done):
+#    try:
+#        choice_string = input('"1": Yes, "2": No')
+#        choice = int(choice_string)
+#        if(choice is 1 or choice is 2):
+#            done = True
+#        else:
+#            raise Exception('Invalid input')
+#    except:
+#        print(f'Invalid input {choice_string}')
 
 primary_keys = helper.find_primary_keys_in_relations(relations)
 if(choice >= 1.0):
