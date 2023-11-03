@@ -1,2 +1,4 @@
-Course->>Professor
-StudentID->>Course
+Course ->> Professor
+Course ->> classroom
+StudentID ->> Course
+StudentID ->> Professor
