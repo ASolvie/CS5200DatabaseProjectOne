@@ -17,7 +17,7 @@ def find_transitive_dependencies(relations: list[helper.Relation]) -> list[helpe
     
 def convert_to_3NF(db_name):
     try:
-        os.remove('ddo.db') # removes old ddo.db file, ddo is the new db file
+        os.remove(f'{db_name}.db') # removes old ddo.db file, ddo is the new db file
     except: 
         print('file not found')
     
@@ -61,5 +61,3 @@ def convert_to_3NF(db_name):
         (que)
         cursor.execute(que)
     connection.commit()
-
-convert_to_3NF('ddo')

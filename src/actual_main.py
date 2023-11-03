@@ -6,6 +6,7 @@ import BCNF_Code
 import Three_NF_Code
 import Two_NF_Code
 import One_NF_Code
+import sqlite3
 
 #database_name = inputs.create_database()
 relations = inputs.create_relations()
@@ -48,27 +49,27 @@ while(not done):
     except:
         print(f'Invalid input {string_input}')
 done = False
-print('Find the highest normal form of the input database?')
-while(not done):
-    try:
-        choice_string = input('"1": Yes, "2": No')
-        choice = int(choice_string)
-        if(choice is 1 or choice is 2):
-            done = True
-        else:
-            raise Exception('Invalid input')
-    except:
-        print(f'Invalid input {choice_string}')
+#print('Find the highest normal form of the input database?')
+#while(not done):
+#    try:
+#        choice_string = input('"1": Yes, "2": No')
+#        choice = int(choice_string)
+#        if(choice is 1 or choice is 2):
+#            done = True
+#        else:
+#            raise Exception('Invalid input')
+#    except:
+#        print(f'Invalid input {choice_string}')
 
 primary_keys = helper.find_primary_keys_in_relations(relations)
 if(choice >= 1.0):
     One_NF_Code.reorganize_for_1NF(input_table, 'ddo.db')
 if(choice >= 2.0):
-    Two_NF_Code.normalize_2NF('ddo.db', 'my_table')
+    Two_NF_Code.normalize_2nf('my_table')
 if(choice >= 3.0):
     Three_NF_Code.convert_to_3NF('ddo')
 if(choice >= 3.5):
-    BCNF_Code.convert_to_BCNF('ddo')
+    BCNF_Code.convertToBCNF('ddo')
 if(choice >= 4.0):
     Four_NF_Code.convertTo4NF('ddo')
 if(choice >= 5.0):
