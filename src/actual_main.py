@@ -38,7 +38,8 @@ while(not done):
         print(f'Invalid input {choice_string}')
 
 if(choice >= 1.0):
-    print('running 1NF')
+    print('We expect tables to be in 1NF, because we limit what tables we parse.')
+    helper.create_database_from_folders('foo','1NF')
 if(choice >= 2.0):
     print('running 2NF')
 if(choice >= 3.0):
