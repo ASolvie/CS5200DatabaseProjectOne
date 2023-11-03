@@ -110,7 +110,7 @@ def find_table_with_columns(database_name, columns) -> str:
     cursor = connection.cursor()
     table_names = list_table_names(database_name)
     for table_name in table_names:
-        if(all(y in [data[0] for data in cursor.execute('SELECT * FROM {table_name}').description] for y in columns)):
+        if(all(y in [data[0] for data in cursor.execute(f'SELECT * FROM {table_name}').description] for y in columns)):
             return table_name
         
 def list_primary_keys_of_table(database_name, table_name) -> list[str]:
