@@ -1,6 +1,7 @@
 import helper
 import csv
 import sqlite3
+import os
     
 def reorganize_for_1NF(tablename, db_filename):
     # rows array represents initial table

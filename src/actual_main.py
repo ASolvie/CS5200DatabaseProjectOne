@@ -9,9 +9,9 @@ import One_NF_Code
 import sqlite3
 
 #database_name = inputs.create_database()
-relations = inputs.create_relations()
-mvds = inputs.create_mvds()
-
+#relations = inputs.create_relations()
+#mvds = inputs.create_mvds()
+#relations = helper.read_in_relations("relations")
 print("Input dataset (.csv format):")
 input_table = input()
 
@@ -28,28 +28,28 @@ with open("Multivalued.txt", "w") as file:
         if inp == "exit":
             break
         file.write(inp + "\n")
-
+relations = helper.read_in_relations("relations")
 print('Pick the normal form you would like "1","2","3","B","4","5"')
 print('input "1"  "2"  "3"  "3.5" "4"  "5"')
 print('means 1NF  2NF  3NF  BCNF  4NF  5NF')
 choice = 0
-done=False
+done = False
 while(not done):
     try:
         string_input = input("Choice: ")
         choice = float(string_input)
-        if(choice is 1.0 or
-           choice is 2.0 or
-           choice is 3.0 or
-           choice is 3.5 or 
-           choice is 4.0 or 
-           choice is 5.0):
+        if(choice == 1.0 or
+           choice == 2.0 or
+           choice == 3.0 or
+           choice == 3.5 or 
+           choice == 4.0 or 
+           choice == 5.0):
             done = True
         else:
             raise Exception('Invalid input')
     except:
         print(f'Invalid input {string_input}')
-done = False
+
 #print('Find the highest normal form of the input database?')
 #while(not done):
 #    try:
@@ -66,7 +66,8 @@ primary_keys = helper.find_primary_keys_in_relations(relations)
 if(choice >= 1.0):
     One_NF_Code.reorganize_for_1NF(input_table, 'ddo.db')
 if(choice >= 2.0):
-    Two_NF_Code.normalize_2nf('my_table')
+    #Two_NF_Code.normalize_2nf()
+    print("YEET")
 if(choice >= 3.0):
     Three_NF_Code.convert_to_3NF('ddo')
 if(choice >= 3.5):
