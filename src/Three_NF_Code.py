@@ -35,13 +35,13 @@ def convert_to_3NF(db_name):
     
     # create tables from primary key relationss
     queries = []#the queries needed to make the new db
-    n = 1#this keeps track of where we are in new table names so we do not duplicate table names, starts at one so the first letter is B and not A
+    n = 0#this keeps track of where we are in new table names so we do not duplicate table names, starts at one so the first letter is B and not A
     name = []
     for derp in primary_keys: #to make new tables for primary keys
         name.append([derp] + [value.y for value in relations if value.x == derp])
     
     for i in range (len(primary_keys)):
-            queries.append(helper.create_select_columns_from_old_table(f'{newTableNames[n]}', 'A', name[i]))#makes the sql queries for a db file
+            queries.append(helper.create_select_columns_from_old_table(f'{newTableNames[n]}', 'my_table', name[i]))#makes the sql queries for a db file
             n = n + 1#increments the n variable
     
     
@@ -50,10 +50,10 @@ def convert_to_3NF(db_name):
     for derp in transitive_deps: #this is to make tables for the transitive deps
         name.append([derp.y] + [value.y for value in relations if value.x == derp.y])
     for i in range (len(transitive_deps)):
-            queries.append(helper.create_select_columns_from_old_table(f'{newTableNames[n]}', 'A', name[i]))#makes the sql queries for a db file
+            queries.append(helper.create_select_columns_from_old_table(f'{newTableNames[n]}', 'my_table', name[i]))#makes the sql queries for a db file
             n = n + 1
     
-    queries.append(helper.delete_table_query('A'))#deletes the original table being given to make the db look better
+    queries.append(helper.delete_table_query('my_table'))#deletes the original table being given to make the db look better
 
     connection = sqlite3.connect(f'{db_name}.db')
     cursor = connection.cursor()
@@ -61,4 +61,4 @@ def convert_to_3NF(db_name):
         (que)
         cursor.execute(que)
     connection.commit()
-convert_to_3NF("ddo")
+#convert_to_3NF("ddo")
