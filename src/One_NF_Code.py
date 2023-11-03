@@ -78,7 +78,7 @@ def reorganize_for_1NF(tablename, db_filename):
 #   return new_table
 
 # Specify the input CSV file and the desired SQLite database filename
-input_csv_filename = 'exampleInputTable1.csv'
+input_csv_filename = '../data/exampleInputTable1.csv'
 output_db_filename = 'ddo.db'
 # Call the function to reorganize for 1NF and create the SQLite database
 reorganize_for_1NF(input_csv_filename, output_db_filename)
