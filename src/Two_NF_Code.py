@@ -6,7 +6,17 @@ class Relation:
     def __init__(self, xToY):
         self.x: str = xToY[0]
         self.y: str = xToY[1]
+def constructCreateTableQuery(tableName, keys, primaryKeys):
+    query = f'CREATE TABLE IF NOT EXISTS {tableName}('
+    for x in keys:
+        query = f'{query}{x} TEXT'
+        if(x in primaryKeys):
+            query = f'{query} KEY'
+        if(keys[-1] != x):
+            query = f'{query},'
 
+    query = f'{query})'
+    return query
 def findPrimaryKeys(relations: list[Relation]):
     k = []
     for r in relations:
@@ -18,6 +28,13 @@ def findPrimaryKeys(relations: list[Relation]):
         if(m in k):
             k.remove(m)
     return list(set(k))
+def remove_duplicate_rows(connection, table_name):
+    cursor = connection.cursor()
+    cursor.execute(f"CREATE TABLE IF NOT EXISTS temp_table AS SELECT DISTINCT * FROM {table_name};")
+    cursor.execute(f"DELETE FROM {table_name};")
+    cursor.execute(f"INSERT INTO {table_name} SELECT * FROM temp_table;")
+    cursor.execute("DROP TABLE temp_table;")
+    connection.commit()
 
 def removeColumns(connection, table1, table2):
     cursor = connection.cursor()
@@ -40,135 +57,72 @@ def removeColumns(connection, table1, table2):
     # Commit the changes
     connection.commit()
 
-def normalize_2nf(connection, table_name):
-    connection = sqlite3.connect('ddo.db') # create a new students database file
-    file = open('data/relations.txt', 'r')
-    relations = []
-    for x in file:
-        relations.append(Relation(x.strip('\n').split('->')))
-        
+def normalize_2nf(connection, table_name, relations):
     first = "" 
-    temp=[]
-    relation_y_dict = {}
+    temp = []
+    relation_x_dict = {}
+    relation_x_dict2 = {}
     primary_keys = findPrimaryKeys(relations)
-    No_PFD=primary_keys
+    No_PFD = primary_keys
     cursor = connection.cursor()
-    # Create separate tables for non-prime attributes
+
+    # Create a dictionary to group 'x' attributes that lead to the same 'y' attribute
+    grouped_x_attributes = {}
+
+    for relation in relations:
+        x, y = relation.x, relation.y
+
+        if y not in grouped_x_attributes:
+            grouped_x_attributes[y] = [x]
+        else:
+            grouped_x_attributes[y].append(x)
+
+    for y, x_attributes in grouped_x_attributes.items():
+        # Create a combined 'x' key using a delimiter
+        combined_x_key = '_'.join(sorted(x_attributes))
+
+        if combined_x_key not in relation_x_dict:
+            relation_x_dict[combined_x_key] = x_attributes
     for relation in relations:
         if relation.x in primary_keys:
-            if relation.y not in relation_y_dict:
-                relation_y_dict[relation.y] = [relation.x]
+            if relation.x not in relation_x_dict2:
+                relation_x_dict2[relation.x] = [relation.y]
             else:
-                relation_y_dict[relation.y].append(relation.x)
+                relation_x_dict2[relation.x].append(relation.y)
             if first == "":
                 first = relation.x
-                #print(first)
-            if first!= relation.x:
-               # print(relation.x, relation.y)
+            if first != relation.x:
                 if relation.x not in temp:
                     temp.append(relation.x)
-                    temp.append(relation.y)
+                    if relation.y not in temp:
+                        temp.append(relation.y)
                 else:
-                    temp.append(relation.y)
-                #print("\n", temp)
-                
-        else:
-            if relation.x in temp:
-                temp.append(relation.y)
-    for relation in relation_y_dict:
-        if all(primary_key in relation_y_dict for primary_key in primary_keys):
-            No_PFD.append(relation)
+                    if relation.y not in temp:
+                        temp.append(relation.y)
+    # Create tables for attributes in relation_x_dict
+    print("\n", relation_x_dict, "\n")
+    for table_name2 in relation_x_dict:
+        attributes = relation_x_dict[table_name2]
 
-    query = constructCreateTableQuery("key_table", No_PFD, primary_keys)
-    cursor.execute(query)
-    cursor.execute(f"INSERT INTO key_table SELECT {table_name}.{No_PFD[0]}, {table_name}.{No_PFD[1]} FROM {table_name};")
-    removeColumns(connection, table_name, primary_keys[1])
-    #Here i want to make a table with 
-    query = constructCreateTableQuery(primary_keys[1], temp, primary_keys)
-    cursor.execute(query)
-    cursor.execute(f"INSERT INTO {primary_keys[1]} SELECT {table_name}.{temp[0]}, {table_name}.{temp[1]},{table_name}.{temp[2]},{table_name}.{temp[3]}, {table_name}.{temp[4]} FROM {table_name};")
-    removeColumns(connection, table_name, primary_keys[1])
+        for key, table_name3 in grouped_x_attributes.items():
+            if len(table_name3) == 1 and table_name3[0] == table_name2:
+                attributes.append(key)
+        # Create the table
+        query = constructCreateTableQuery(table_name2, attributes, primary_keys)
+        cursor.execute(query)
+
+        # Copy data from the original table to the new table
+        attribute_list = ', '.join(attributes)
+        #print(attribute_list)
+        #print(table_name2)
+        cursor.execute(f"INSERT INTO {table_name2} SELECT {table_name}.{attribute_list} FROM {table_name};")
+
+        # Remove the copied columns from the original table
+        removeColumns(connection, table_name, attributes)
+        remove_duplicate_rows(connection, table_name2)
+    #print(attributes)
+    print(relation_x_dict)
+    print(grouped_x_attributes)
     # Commit the changes
     connection.commit()
-    #print("\n", relation_y_dict)
-
-
-def constructCreateTableQuery(tableName, keys, primaryKeys):
-    query = f'CREATE TABLE IF NOT EXISTS {tableName}('
-    for x in keys:
-        query = f'{query}{x} TEXT'
-        if(x in primaryKeys):
-            query = f'{query} KEY'
-        if(keys[-1] != x):
-            query = f'{query},'
-
-    query = f'{query})'
-    return query
-try:
-    os.remove('school.db') # removes old school.db file
-except: 
-    print('file not found')
-connection = sqlite3.connect('school.db') # create a new students database file
-cursor = connection.cursor() # creates a cursor to interact with the database
-
-# creates a table called students
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS
-students(
-    studentId TEXT,
-    firstName TEXT,
-    lastName TEXT,
-    course TEXT,
-    professor TEXT,
-    professorEmail TEXT,
-    courseStart TEXT,
-    courseEnd TEXT
-)
-""")
-
-# parses the file and adds the rows
-file = open('data/exampleInputTable1.csv', 'r')
-file.readline()
-for x in file:
-    studentId, firstName, lastName, course, professor, professorEmail, courseStart, courseEnd = x.strip('\n').split(",")
-    query = f'INSERT INTO students VALUES (\'{studentId}\', \'{firstName}\', \'{lastName}\', \'{course}\', \'{professor}\', \'{professorEmail}\', \'{courseStart}\', \'{courseEnd}\')'
-    print(query)
-    cursor.execute(query)
-file.close()
-
-# sanity check to see the data was added to the students table
-cursor.execute("SELECT * FROM students")
-print(cursor.fetchall())
-
-# commits the changes to the actual file. While they aren't commit it is a temporary change
-connection.commit()
-
-file = open('data/relations.txt', 'r')
-relations = []
-for x in file:
-    relations.append(Relation(x.strip('\n').split('->')))
-
-normalize_2nf(connection, 'students', relations)
-
-print('')
-print(f'Primary keys {findPrimaryKeys(relations)}')
-
-file = open('data/exampleInputTable1.csv', 'r')
-k = file.readline().strip('\n').split(',')
-cursor.execute(constructCreateTableQuery('testTable', k, findPrimaryKeys(relations)))
-
-cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
-table_names = cursor.fetchall()
-
-# Print data from each table
-for table_name in table_names:
-    table_name = table_name[0]  # Extract the table name from the tuple
-    cursor.execute(f"SELECT * FROM {table_name};")
-    print(f"Table: {table_name}")
-    for row in cursor.fetchall():
-        print(row)
-    print()
-
-cursor.execute("SELECT * FROM testTable")
-print(cursor.fetchall())
-#input("Which normal form level would you like?")
+    print(relation_x_dict2)
