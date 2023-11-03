@@ -51,7 +51,7 @@ if(choice >= 1.0):
 if(choice >= 2.0):
     print('running 2NF')
 if(choice >= 3.0):
-    Three_NF_Code.convert_to_3NF(db_name)
+    Three_NF_Code.convert_to_3NF('ddo')
 if(choice >= 3.5):
     print('running BCNF')
 if(choice >= 4.0):
@@ -59,3 +59,36 @@ if(choice >= 4.0):
 if(choice >= 5.0):
     FiveNF_Code.fifth_normal_form('ddo.db', primary_keys)
 
+# BELOW CODE IS MEANT TO OUTPUT CONTENT OF ddo.db TO OUTPUT FILE
+
+# Connect to the SQLite database
+conn = sqlite3.connect("ddo.db")
+cursor = conn.cursor()
+
+# Get a list of tables in the database
+cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+table_names = cursor.fetchall()
+
+# Open the output.txt file for writing
+with open('output.txt', 'w') as output_file:
+    # Iterate through the table names and generate CREATE TABLE statements
+    for table_name in table_names:
+        table_name = table_name[0]
+        cursor.execute(f"PRAGMA table_info({table_name});")
+        table_info = cursor.fetchall()
+        
+        create_table_query = f"CREATE TABLE {table_name} ("
+        for column in table_info:
+            column_name = column[1]
+            data_type = column[2]
+            not_null = "NOT NULL" if column[3] else ""
+            primary_key = "PRIMARY KEY" if column[5] else ""
+            create_table_query += f"{column_name} {data_type} {not_null} {primary_key}, "
+        create_table_query = create_table_query[:-2]  # Remove the trailing comma and space
+        create_table_query += ");\n"
+        
+        # Write the CREATE TABLE statement to the output file
+        output_file.write(create_table_query)
+
+# Close the database connection
+conn.close()
