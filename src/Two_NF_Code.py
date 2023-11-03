@@ -64,8 +64,15 @@ def transform_relationships(input_file, output_file):
                 continue
             x, y = line.split(' -> ')
             y_parts = [part.strip() for part in y.split(',')]
-            for y_part in y_parts:
-                outfile.write(f"{x}->{y_part}\n")
+            
+            if ',' in x:
+                x_parts = [part.strip() for part in x.split(',')]
+                for x_part in x_parts:
+                    for y_part in y_parts:
+                        outfile.write(f"{x_part} -> {y_part}\n")
+            else:
+                for y_part in y_parts:
+                    outfile.write(f"{x} -> {y_part}\n")
 
 def normalize_2nf():
     connection = sqlite3.connect('ddo.db')
