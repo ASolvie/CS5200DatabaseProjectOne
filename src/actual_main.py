@@ -66,8 +66,7 @@ primary_keys = helper.find_primary_keys_in_relations(relations)
 if(choice >= 1.0):
     One_NF_Code.reorganize_for_1NF(input_table, 'ddo.db')
 if(choice >= 2.0):
-    #Two_NF_Code.normalize_2nf()
-    print("YEET")
+    Two_NF_Code.normalize_2nf()
 if(choice >= 3.0):
     Three_NF_Code.convert_to_3NF('ddo')
 if(choice >= 3.5):
